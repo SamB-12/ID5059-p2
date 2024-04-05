@@ -1,22 +1,28 @@
-# Correlations Exploration (Emma's)
+# Correlations Exploration
 ## Notable insights
 ##### feature vs status 
 * Ascites and Y category of edema were strong predictors of D class 
-* Sex / hepatomegaly / spiders / stage / age / bilirubin / N_Days / albumin / copper in urine / SGOT/ platelets/ prothrombin influenced status.
+* Sex / hepatomegaly / spiders / stage / age / bilirubin / albumin / copper in urine / SGOT/ platelets/ prothrombin influenced status.
 ##### feature vs feature
 * Moderate negative correlation between N catagory of edema ascites (-0.53)
 * Strong positive correlation between Y catagory of edema and ascites (0.66)
 * Moderate positive correlation between stage and hepatomegaly (0.5)
 * no significant non-linear relationships were found between features. 
+
 ## Importing packages and loading the data
+
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+
 df_train = pd.read_csv("data/train.csv")
 df_test = pd.read_csv("data/test.csv")
+
 ## Looking for relationships between features and status
+
 ### Catagorical variables
+
 # function used to create pivot table to draw stacked bar chart
 def createPivotTable(data, variable): 
     # Group the data by 'Drug' and 'Status' and count the occurrences
@@ -25,6 +31,7 @@ def createPivotTable(data, variable):
     grouped['Proportion'] = grouped['Count'] / total_patients_per_variable
     pivot_df = grouped.pivot(index=variable, columns='Status', values='Proportion')
     return pivot_df
+
 pivot_df = createPivotTable(df_train, 'Drug')
 # Plotting the stacked bar chart
 pivot_df.plot(kind='bar', stacked=True)
@@ -39,7 +46,9 @@ plt.legend(title='Status')
 
 # Displaying the plot
 plt.show()
+
 #### Drug did not have a signicant effect on status. D-penillamine did not have significant effect on the in proportion the of patients in each class
+
 pivot_df = createPivotTable(df_train, 'Sex')
 # Plotting the stacked bar chart
 pivot_df.plot(kind='bar', stacked=True)
@@ -54,7 +63,9 @@ plt.legend(title='Status')
 
 # Displaying the plot
 plt.show()
+
 #### Sex had a signficnat effect on status. Men had a higher proportion of patients in D class and lower proportion of patients in C class
+
 pivot_df = createPivotTable(df_train, 'Ascites')
 # Plotting the stacked bar chart
 pivot_df.plot(kind='bar', stacked=True)
@@ -69,7 +80,9 @@ plt.legend(title='Status')
 
 # Displaying the plot
 plt.show()
+
 ### Ascites had a signficnat effect on status. Patients with ascites had a significantly higher proportion in D class and lower proportion in C class.
+
 pivot_df = createPivotTable(df_train, 'Hepatomegaly')
 # Plotting the stacked bar chart
 pivot_df.plot(kind='bar', stacked=True)
@@ -84,7 +97,9 @@ plt.legend(title='Status')
 
 # Displaying the plot
 plt.show()
+
 #### Hepatomegaly had a signficant effect on status. Patients with hepatomegaly had a higher proportion in D class and lower in C class. 
+
 pivot_df = createPivotTable(df_train, 'Spiders')
 # Plotting the stacked bar chart
 pivot_df.plot(kind='bar', stacked=True)
@@ -99,7 +114,9 @@ plt.legend(title='Status')
 
 # Displaying the plot
 plt.show()
+
 #### Spiders had a signficant effect on status. Patients with spiders had a higher proportion in D class and lower in C class. 
+
 pivot_df = createPivotTable(df_train, 'Edema')
 # Plotting the stacked bar chart
 pivot_df.plot(kind='bar', stacked=True)
@@ -114,8 +131,11 @@ plt.legend(title='Status')
 
 # Displaying the plot
 plt.show()
+
 ##### Edema catagory had a signficant effect on status. Patients in Y and S class for Edema had significantly higher proportion of patients in D class. Higher proportion in Y than S. 
+
 ##### Description of edema variable: presence of edema N (no edema and no diuretic therapy for edema), S (edema present without diuretics, or edema resolved by diuretics), or Y (edema despite diuretic therapy)
+
 pivot_df = createPivotTable(df_train, 'Stage')
 # Plotting the stacked bar chart
 pivot_df.plot(kind='bar', stacked=True)
@@ -130,8 +150,11 @@ plt.legend(title='Status')
 
 # Displaying the plot
 plt.show()
+
 #### Stage of disease had a signficant effect on status. Patients in stage 4 of disease had a significantly higher proportion in D class than 1,2,3. 2 and 3 were greater than 1. 2 and 3 were similar. 
+
 ### Continuous variables
+
 # Convert age from days to years for better readability
 df_train['Age_years'] = df_train['Age'] / 365.25
 
@@ -142,7 +165,9 @@ plt.title('Boxplot of Age by Status')
 plt.xlabel('Status')
 plt.ylabel('Age (years)')
 plt.show()
+
 #### Age had an effect on status. Patients in CL class were associated with a lower age 
+
 # Create a boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='Status', y='Bilirubin', data=df_train)
@@ -150,7 +175,11 @@ plt.title('Boxplot of Serum Bilirubin by Status')
 plt.xlabel('Status')
 plt.ylabel('Serum Bilirubin (mg/dl)')
 plt.show()
+
 #### Bilirubin had an effect on status. Patients in C class had lower bilibrubin
+
+
+
 # Create a boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='Status', y='Cholesterol', data=df_train)
@@ -158,7 +187,9 @@ plt.title('Boxplot of Level of Cholesterol by Status')
 plt.xlabel('Status')
 plt.ylabel('Serum Cholesterol (mg/dl)')
 plt.show()
+
 #### Cholesterol did not had an effect on status.
+
 # Create a boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='Status', y='Albumin', data=df_train)
@@ -166,7 +197,9 @@ plt.title('Boxplot of Level of Albumin by Status')
 plt.xlabel('Status')
 plt.ylabel('Albumin (mg/dl)')
 plt.show()
+
 #### Albumin had an effect on status. Patients in D class were associated with lower albumin
+
 # Create a boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='Status', y='Copper', data=df_train)
@@ -174,7 +207,9 @@ plt.title('Boxplot of Level of Urine Copper by Status')
 plt.xlabel('Status')
 plt.ylabel('Urine Copper (ug/day)')
 plt.show()
+
 #### Copper in urine had an effect on status. Patients in C class were associated with lower copper in urine
+
 # Create a boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='Status', y='Alk_Phos', data=df_train)
@@ -182,7 +217,9 @@ plt.title('Boxplot of Level of Alkaline Phosphatase by Status')
 plt.xlabel('Status')
 plt.ylabel('Alkaline Phosphatase (U/liter)')
 plt.show()
+
 #### Alkaline phosphotase did not have a significant effect on status.
+
 # Create a boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='Status', y='SGOT', data=df_train)
@@ -190,8 +227,11 @@ plt.title('Boxplot of Level of SGOT by Status')
 plt.xlabel('Status')
 plt.ylabel('SGOT (U/ml)')
 plt.show()
+
 #### SGOT had an effect on status. Patients in C class were associated with lower SGOT
+
 #### SGOT - serum glutamic-oxaloacetic transaminase
+
 # Create a boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='Status', y='Tryglicerides', data=df_train)
@@ -199,7 +239,9 @@ plt.title('Boxplot of Tryglicerides by Status')
 plt.xlabel('Status')
 plt.ylabel('Tryglicerides')
 plt.show()
+
 #### Triglicerides did not have a significant effect on status.
+
 # Create a boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='Status', y='Platelets', data=df_train)
@@ -207,7 +249,9 @@ plt.title('Boxplot of Platelets by Status')
 plt.xlabel('Status')
 plt.ylabel('Platelets per Cubic (ml/1000)')
 plt.show()
+
 #### Platelets had an effect on status. Patients in D class were associated with lower platelets
+
 # Create a boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='Status', y='Prothrombin', data=df_train)
@@ -215,18 +259,14 @@ plt.title('Boxplot of Prothrombin by Status')
 plt.xlabel('Status')
 plt.ylabel('Prothrombin Time (s)')
 plt.show()
+
 #### Prothrobin had an effect on status. Patients in D class were associated with higher prothrobin
-# Create a boxplot
-plt.figure(figsize=(10, 6))
-sns.boxplot(x='Status', y='N_Days', data=df_train)
-plt.title('Boxplot of N_Days by Status')
-plt.xlabel('Status')
-plt.ylabel('Number of days')
-plt.show()
-### N days had an effect on status. Patients in D and CL class were associated with a fewer number of days 
+
 ## Looking for relationships between features and features
+
 ### Ordinal 
 * Stage 
+
 ##### One hot encode catagorical 
 * Sex                 
 * Ascites             
@@ -234,10 +274,12 @@ plt.show()
 * Spiders             
 * Edema                           
 * Drug 
+
 # Edema
 data = {'Category': ['N', 'S', 'Y']}
 df = df_train['Edema']
 EdemaNumerical = pd.get_dummies(df, columns=['Category'])
+
 
 df_train['SexNumerical'] = np.where(df_train['Sex']=='F', 1, 0)
 df_train['AscitesNumerical'] = np.where(df_train['Ascites']=='N', 0, 1)
@@ -246,8 +288,11 @@ df_train['SpidersNumerical'] = np.where(df_train['Spiders']=='N', 0, 1)
 #df_train['EdemaNumerical'] = np.where(df_train['Edema']=='N', 0, 1)
 df_train['DrugNumerical'] = np.where(df_train['Drug']=='D-penicillamine', 1, 0)
 
+
 df_merged = (df_train[['SexNumerical', 'AscitesNumerical', 'HepatomegalyNumerical', 'SpidersNumerical', 'Stage', 'DrugNumerical']])
+
 df_train_catagorical = pd.concat([df_merged, EdemaNumerical], axis=1)
+
 ##### Numerical
 * Age
 * Bilirubin
@@ -259,13 +304,26 @@ df_train_catagorical = pd.concat([df_merged, EdemaNumerical], axis=1)
 * Tryglicerides     
 * Platelets         
 * Prothrombin        
+
 df_train_numerical = (df_train[['Age', 'Bilirubin', 'Cholesterol', 'Albumin', 'Copper', 'Alk_Phos', 'SGOT', 'Tryglicerides', 'Platelets', 'Prothrombin']])
+
 all_train_data = df_train_catagorical.join(df_train_numerical)
+
 plt.figure(figsize=(20,26))
 sns.heatmap(all_train_data.corr(), annot=True, cmap="RdYlGn")
+
 * strong negative correlation between N catagory of edema ascites (-0.53)
 * strong positive correlation between Y catagory of edema and ascites (0.66)
 * strong positive correlation between stage and hepatomegaly (0.5)
+
 plt.figure(figsize=(50,50))
 sns.pairplot(all_train_data)
-### no significant non linear relationships were found 
+
+### no significant non linear relationships were found # Load the full training data csv
+full_data_path = 'train.csv'
+full_data = pd.read_csv(full_data_path)
+# Verify basic information like length of the full training data csv
+full_data_info = full_data.info()
+# full_data_head = full_data.head()
+
+# full_data_info, full_data_head
